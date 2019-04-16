@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: fr.atsyra.abat.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.atsyra.abat.ide
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: fr.atsyra.abat.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: fr.atsyra.abat,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: fr.atsyra.abat.ide.contentassist.antlr.internal,
+ fr.atsyra.abat.ide.contentassist.antlr

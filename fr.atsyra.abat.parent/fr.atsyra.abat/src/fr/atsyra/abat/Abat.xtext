@@ -1,0 +1,23 @@
+grammar fr.atsyra.abat.Abat with org.eclipse.xtext.common.Terminals
+
+generate abat "http://www.atsyra.fr/abat/Abat"
+
+AttackTree:
+	root=Tree;
+	
+Tree :
+	And
+	| Sand
+	| Or
+	| Leaf;
+
+Operator : And | Sand | Or ;
+
+And : 'AND' '(' left=Tree ',' right=Tree  ')' ;
+
+Or : 'OR' '(' left=Tree ',' right=Tree  ')' ;
+
+Sand : 'SAND' '(' left=Tree ',' right=Tree  ')' ;
+
+Leaf : name=STRING;	
+
