@@ -61,22 +61,20 @@ public class TestSemantics extends FileAction {
 				System.out.println("After reducing boolean leaves new tree state " + getText(tree));
 				
 				if (tree instanceof True) {
-					System.out.println("Trace " + trace.getActs().subList(0, i) + " is an accepted attack.");
+					System.out.println("Trace " + trace.getActs().subList(0, i+1) + " is an accepted attack.");
 					if (i != trace.getActs().size()-1) {
-						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i, trace.getActs().size()-1) + "  is not useful.");
+						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()-1) + "  is not useful.");
 					}
 					break;
 				} else if (tree instanceof False) {
-					System.out.println("Trace " + trace.getActs().subList(0, i) + " is rejected.");
+					System.out.println("Trace " + trace.getActs().subList(0, i+1) + " is rejected.");
 					if (i != trace.getActs().size()-1) {
-						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i, trace.getActs().size()-1) + " was not even tested.");
+						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()-1) + " was not even tested.");
 					}
 					break;				
 				}
-				
 			}
 		}
-		
 	}
 
 
