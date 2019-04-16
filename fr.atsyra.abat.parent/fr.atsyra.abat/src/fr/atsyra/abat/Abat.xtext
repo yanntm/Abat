@@ -3,13 +3,21 @@ grammar fr.atsyra.abat.Abat with org.eclipse.xtext.common.Terminals
 generate abat "http://www.atsyra.fr/abat/Abat"
 
 AttackTree:
-	root=Tree;
+	'tree' '=' root=Tree ';'
+	(traces += Trace)*
+	;
+	
+Trace :
+	'trace' name=ID '=' acts+=STRING ( ',' acts+=STRING)* ';'
+;	
 	
 Tree :
 	And
 	| Sand
 	| Or
-	| Leaf;
+	| Leaf
+	| True
+	| False;
 
 Operator : And | Sand | Or ;
 
@@ -21,3 +29,9 @@ Sand : 'SAND' '(' left=Tree ',' right=Tree  ')' ;
 
 Leaf : name=STRING;	
 
+True : {True} 'true' ;
+False : {False} 'false' ;
+
+OperatorForce returns Operator :
+	left=Tree ',' right=Tree
+;

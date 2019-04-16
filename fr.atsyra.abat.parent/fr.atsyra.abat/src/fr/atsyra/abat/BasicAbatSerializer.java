@@ -1,17 +1,18 @@
 package fr.atsyra.abat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
 import fr.atsyra.abat.abat.And;
 import fr.atsyra.abat.abat.AttackTree;
+import fr.atsyra.abat.abat.False;
 import fr.atsyra.abat.abat.Leaf;
 import fr.atsyra.abat.abat.Or;
 import fr.atsyra.abat.abat.Sand;
+import fr.atsyra.abat.abat.True;
 import fr.atsyra.abat.abat.util.AbatSwitch;
 
 
@@ -33,6 +34,13 @@ public class BasicAbatSerializer extends AbatSwitch<Boolean>{
 		pw = null;
 	}
 
+	public static String getText (EObject modelElement) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		BasicAbatSerializer bgs = new BasicAbatSerializer();
+		bgs.serialize(modelElement, bos);
+		return bos.toString();
+	}
+	
 	public void setStream(OutputStream stream) {
 		pw = new PrintWriter(stream);
 	}
@@ -78,5 +86,18 @@ public class BasicAbatSerializer extends AbatSwitch<Boolean>{
 		pw.print("\"" + l.getName() + "\"");
 		return true;
 	}
+	
+	@Override
+	public Boolean caseTrue(True object) {
+		pw.print("true");
+		return true;
+	}
 
+	@Override
+	public Boolean caseFalse(False object) {
+		pw.print("false");
+		return true;
+	}
+
+	
 }
