@@ -30,13 +30,14 @@ public class TestSemantics extends FileAction {
 		Tree treeOri = model.getRoot();
 		for (Trace trace :model.getTraces()) {
 			Tree tree = EcoreUtil.copy(treeOri);
-			Or cont = AbatFactory.eINSTANCE.createOr();
-			cont.setLeft(tree);
+			
+			AttackTree cont = AbatFactory.eINSTANCE.createAttackTree();
+			cont.setRoot(tree);
 			 
 			for (int i =0 ; i < trace.getActs().size() ; i++) {
 				String label = trace.getActs().get(i);
 				Set<Leaf> initialNodes = new HashSet<>();
-				gatherInitial (tree, initialNodes);
+				gatherInitial (cont.getRoot(), initialNodes);
 				
 				// replace initials with the right letter by True
 				for (Leaf l : initialNodes) {
@@ -45,70 +46,70 @@ public class TestSemantics extends FileAction {
 					}
 				}
 				
-				System.out.println("In trace "+ trace.getName()+ " after executing label " + label + " new tree state " + getText(tree));
+				System.out.println("In trace "+ trace.getName()+ " after executing label " + label + " new tree state " + getText(cont.getRoot()));
 				
 				// now iterate downwards, looking for goals that have not been progressing 
 				// but should have
-				updateFalse(tree);
-				tree = cont.getLeft();
+				updateFalse(cont.getRoot());
 				
-				System.out.println("After propagating false new tree state " + getText(tree));
+				
+				System.out.println("After propagating false new tree state " + getText(cont.getRoot()));
 
-				reduceBoolean(tree);
-				tree = cont.getLeft();
+				reduceBoolean(cont.getRoot());
 				
 				
-				System.out.println("After reducing boolean leaves new tree state " + getText(tree));
 				
-				if (tree instanceof True) {
+				System.out.println("After reducing boolean leaves new tree state " + getText(cont.getRoot()));
+				
+				if (cont.getRoot() instanceof True) {
 					System.out.println("Trace " + trace.getActs().subList(0, i+1) + " is an accepted attack.");
 					if (i != trace.getActs().size()-1) {
-						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()-1) + "  is not useful.");
+						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()) + "  is not useful.");
 					}
 					break;
-				} else if (tree instanceof False) {
+				} else if (cont.getRoot() instanceof False) {
 					System.out.println("Trace " + trace.getActs().subList(0, i+1) + " is rejected.");
 					if (i != trace.getActs().size()-1) {
-						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()-1) + " was not even tested.");
+						System.out.println("Note that the suffix of this trace : " + trace.getActs().subList(i+1, trace.getActs().size()) + " was not even tested.");
 					}
-					break;				
+					break;
 				}
 			}
 		}
 	}
 
-
-
 	private void reduceBoolean(Tree t) {
 		if (t instanceof Operator) {
 			Operator op = (Operator) t;
-			reduceBoolean(op.getLeft());
-			reduceBoolean(op.getRight());
+			for (Tree child : op.getOps()) {
+				reduceBoolean(child);
+			}
 			
 			if (op instanceof Or) {
 				Or or = (Or) op;
-				if (or.getLeft() instanceof False) {
-					EcoreUtil.replace(or, or.getRight());
-				} else if (or.getRight() instanceof False) {
-					EcoreUtil.replace(or, or.getLeft());
-				} else if (or.getLeft() instanceof True || or.getRight() instanceof True) {					
+				or.getOps().removeIf(c -> c instanceof False);
+				if (or.getOps().stream().anyMatch(c -> c instanceof True)) {
 					EcoreUtil.replace(or, AbatFactory.eINSTANCE.createTrue());
+				} else if (or.getOps().size() == 1) {
+					EcoreUtil.replace(or, or.getOps().get(0));
 				}
 			} else if (op instanceof And) {
 				And and = (And) op;
-				if (and.getLeft() instanceof False || and.getRight() instanceof False) {
+				and.getOps().removeIf(c -> c instanceof True);
+				if (and.getOps().stream().anyMatch(c -> c instanceof False)) {
 					EcoreUtil.replace(and, AbatFactory.eINSTANCE.createFalse());
-				} else if (and.getLeft() instanceof True) {
-					EcoreUtil.replace(and, and.getRight());
-				} else if (and.getRight() instanceof True) {
-					EcoreUtil.replace(and, and.getLeft());
-				}								
+				} else if (and.getOps().size() == 1) {
+					EcoreUtil.replace(and, and.getOps().get(0));
+				}
 			} else if (op instanceof Sand) {
 				Sand sand = (Sand) op;
-				if (sand.getLeft() instanceof True) {
-					EcoreUtil.replace(sand, sand.getRight());
-				} else if (sand.getLeft() instanceof False) {
-					EcoreUtil.replace(sand, sand.getLeft());
+				if (sand.getOps().get(0) instanceof True) {
+					sand.getOps().remove(0);
+				} else if (sand.getOps().get(0) instanceof False) {
+					EcoreUtil.replace(sand, AbatFactory.eINSTANCE.createFalse());
+				} 
+				if (sand.getOps().size() == 1) {
+					EcoreUtil.replace(sand, sand.getOps().get(0));
 				}
 			}
 		}
@@ -119,38 +120,39 @@ public class TestSemantics extends FileAction {
 	private void updateFalse(Tree tree) {
 		if (tree instanceof Or) {
 			Or or = (Or) tree;
-			if (! hasTrueDescendant(or.getLeft())) {
-				or.setLeft(AbatFactory.eINSTANCE.createFalse());
-			} else {
-				updateFalse(or.getLeft());
+			
+			for (int i = or.getOps().size() - 1 ; i >= 0 ; i--) {
+				Tree op = or.getOps().get(i);
+				if (! hasTrueDescendant(op)) {
+					EcoreUtil.replace(op, AbatFactory.eINSTANCE.createFalse());
+				} else {
+					updateFalse(op);
+				}
 			}
-			if (! hasTrueDescendant(or.getRight())) {
-				or.setRight(AbatFactory.eINSTANCE.createFalse());
-			} else {
-				updateFalse(or.getRight());
-			}
+			
 		} else if (tree instanceof And) {
 			And and = (And) tree;
-			boolean hasLT = hasTrueDescendant(and.getLeft());
-			boolean hasRT = hasTrueDescendant(and.getRight());
-			if ( (!hasLT) && (!hasRT) ) {
+			boolean hasT = false;
+			
+			for (Tree op : and.getOps()) {
+				if (hasTrueDescendant(op)) {
+					updateFalse(op);
+					hasT = true;
+				} else {
+					EcoreUtil.replace(op, AbatFactory.eINSTANCE.createFalse());
+				}
+			}
+
+			if (! hasT) {
 				EcoreUtil.replace(and, AbatFactory.eINSTANCE.createFalse());
-				
-			} else {
-				if (hasLT){
-					updateFalse(and.getLeft());
-				}
-				if (hasRT) {
-					updateFalse(and.getRight());
-				}
 			}
 		} else if (tree instanceof Sand) {
 			Sand sand = (Sand) tree;
-			boolean hasLT = hasTrueDescendant(sand.getLeft());
+			boolean hasLT = hasTrueDescendant(sand.getOps().get(0));
 			if (! hasLT) {
 				EcoreUtil.replace(sand, AbatFactory.eINSTANCE.createFalse());
 			} else {
-				updateFalse(sand.getLeft());
+				updateFalse(sand.getOps().get(0));
 			}
 		}
 	}
@@ -160,7 +162,7 @@ public class TestSemantics extends FileAction {
 	private boolean hasTrueDescendant(Tree t) {
 		if (t instanceof Operator) {
 			Operator op = (Operator) t;
-			return hasTrueDescendant(op.getLeft()) || hasTrueDescendant(op.getRight());
+			return op.getOps().stream().anyMatch(c -> hasTrueDescendant(c));			
 		} else if (t instanceof True) {
 			return true;
 		}
@@ -175,11 +177,12 @@ public class TestSemantics extends FileAction {
 			initialNodes.add(leaf);			
 		} else if (tree instanceof Sand) {
 			Sand sand = (Sand) tree;
-			gatherInitial(sand.getLeft(), initialNodes);
+			gatherInitial(sand.getOps().get(0), initialNodes);
 		} else if (tree instanceof Operator) {
 			Operator op = (Operator) tree;
-			gatherInitial(op.getLeft(), initialNodes);
-			gatherInitial(op.getRight(), initialNodes);
+			for (Tree c : op.getOps()) {
+				gatherInitial(c, initialNodes);
+			}
 		} else {
 			System.out.println("Error with unexpected tree node type : " + tree.getClass().getName());
 		}
