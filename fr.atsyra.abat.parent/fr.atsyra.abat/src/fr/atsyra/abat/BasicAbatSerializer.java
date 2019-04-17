@@ -10,8 +10,10 @@ import fr.atsyra.abat.abat.And;
 import fr.atsyra.abat.abat.AttackTree;
 import fr.atsyra.abat.abat.False;
 import fr.atsyra.abat.abat.Leaf;
+import fr.atsyra.abat.abat.Operator;
 import fr.atsyra.abat.abat.Or;
 import fr.atsyra.abat.abat.Sand;
+import fr.atsyra.abat.abat.Tree;
 import fr.atsyra.abat.abat.True;
 import fr.atsyra.abat.abat.util.AbatSwitch;
 
@@ -53,31 +55,36 @@ public class BasicAbatSerializer extends AbatSwitch<Boolean>{
 	
 	@Override
 	public Boolean caseAnd(And node) {
-		pw.print("AND(");
-		doSwitch(node.getLeft());
-		pw.print(",");
-		doSwitch(node.getRight());
-		pw.print(")");
+		pw.print("AND");
+		printOperands(node);
 		return true;
+	}
+
+	private void printOperands(Operator node) {
+		boolean first = true;
+		pw.print("(");
+		for (Tree t : node.getOps()) {
+			if (first) {
+				first = false;
+			} else {
+				pw.print(", ");
+			}
+			doSwitch(t);			
+		}		
+		pw.print(")");
 	}
 	
 	@Override
 	public Boolean caseOr(Or node) {
-		pw.print("OR(");
-		doSwitch(node.getLeft());
-		pw.print(",");
-		doSwitch(node.getRight());
-		pw.print(")");
+		pw.print("OR");
+		printOperands(node);
 		return true;
 	}
 	
 	@Override
 	public Boolean caseSand(Sand node) {
-		pw.print("SAND(");
-		doSwitch(node.getLeft());
-		pw.print(",");
-		doSwitch(node.getRight());
-		pw.print(")");
+		pw.print("SAND");
+		printOperands(node);
 		return true;
 	}
 	
