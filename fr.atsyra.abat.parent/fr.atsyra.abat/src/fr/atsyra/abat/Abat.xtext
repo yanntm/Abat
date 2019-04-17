@@ -21,17 +21,18 @@ Tree :
 
 Operator : And | Sand | Or ;
 
-And : 'AND' '(' left=Tree ',' right=Tree  ')' ;
+And : 'AND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
-Or : 'OR' '(' left=Tree ',' right=Tree  ')' ;
+Or : 'OR' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
-Sand : 'SAND' '(' left=Tree ',' right=Tree  ')' ;
+Sand : 'SAND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
 Leaf : name=STRING;	
 
 True : {True} 'true' ;
 False : {False} 'false' ;
 
+
 OperatorForce returns Operator :
-	left=Tree ',' right=Tree
-;
+   ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
+ 
