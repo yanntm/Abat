@@ -39,9 +39,13 @@ public class BasicAbatSerializer extends AbatSwitch<Boolean>{
 	}
 
 	public static String getText (EObject modelElement) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		BasicAbatSerializer bgs = new BasicAbatSerializer();
-		bgs.serialize(modelElement, bos);
+		return bgs.getTextM(modelElement);
+	}
+	
+	public String getTextM (EObject modelElement) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		serialize(modelElement, bos);
 		return bos.toString();
 	}
 	
