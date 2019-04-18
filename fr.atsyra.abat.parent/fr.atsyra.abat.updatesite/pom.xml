@@ -6,7 +6,7 @@
 	  <groupId>fr.atsyra.abat</groupId>
 	  <artifactId>fr.atsyra.abat.parent</artifactId>
 	  <version>1.0.0-SNAPSHOT</version>
-	  <relativePath>../fr.atsyra.abat.parent/pom.xml</relativePath>
+	  <relativePath>../pom.xml</relativePath>
   </parent>
 
     <artifactId>fr.atsyra.abat.updatesite</artifactId>
