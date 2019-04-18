@@ -5,6 +5,10 @@ Action Based Attack Trees
 
 This small project contains some proof of concept implementations of recent algorithms for analysis of action based attack trees.
 
+
+![screenshot](https://raw.githubusercontent.com/yanntm/Abat/master/img/tree.png)
+
+
 The examples and code are packaged as an eclipse plugin for ease of use and user friendliness.
 
 ## Installing
