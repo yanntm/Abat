@@ -15,6 +15,8 @@ import fr.atsyra.abat.abat.Or;
 import fr.atsyra.abat.abat.Sand;
 import fr.atsyra.abat.abat.Tree;
 import fr.atsyra.abat.abat.True;
+import fr.atsyra.abat.abat.Wand;
+import fr.atsyra.abat.abat.Wsand;
 import fr.atsyra.abat.abat.util.AbatSwitch;
 
 
@@ -59,6 +61,21 @@ public class BasicAbatSerializer extends AbatSwitch<Boolean>{
 		printOperands(node);
 		return true;
 	}
+	
+	@Override
+	public Boolean caseWand(Wand node) {
+		pw.print("wAND");
+		printOperands(node);
+		return true;
+	}
+	
+	@Override
+	public Boolean caseWsand(Wsand node) {
+		pw.print("wSAND");
+		printOperands(node);
+		return true;
+	}
+		
 
 	private void printOperands(Operator node) {
 		boolean first = true;
