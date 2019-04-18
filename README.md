@@ -16,9 +16,10 @@ Check the category, approve the license, let eclipse restart.
 
 ## Getting started
 
-Create a "File-> New-> Project."
+Create a "File-> New-> Project > General :: Project"
 
-Create a "File-> new -> file -> Empty file" and give it the `.abat` extension, e.g. `test.abat`.
+Create a "File-> new -> File" and give it the `.abat` extension, e.g. `test.abat`.
+Accept the dialog query for making this project "XText", this tool gives support for syntax highlighting, completion...
 
 Alternatively, import some of the example files in the Examples folder of this repository.
 
@@ -89,6 +90,7 @@ Trace "interval_1_9" accepted
 Trace "interval_1_10" rejected 
 ```
 
+(The double popup is a small workaround because the nicer second popup is not Copy/Paste enabled)
 
 More diagnosis information can be found in the "console", use "Window->Show View->Other->Console" if it is not already displayed.
 
