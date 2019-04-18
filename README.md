@@ -88,6 +88,7 @@ Trace "interval_1_9" accepted
 Trace "interval_1_10" rejected 
 ```
 
+(The double popup is a small workaround because the nicer second popup is not Copy/Paste enabled)
 
 More diagnosis information can be found in the "console", use "Window->Show View->Other->Console" if it is not already displayed.
 
