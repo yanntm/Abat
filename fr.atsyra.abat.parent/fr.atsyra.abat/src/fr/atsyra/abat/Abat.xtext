@@ -8,7 +8,7 @@ AttackTree:
 	;
 	
 Trace :
-	'trace' name=ID '=' acts+=STRING ( ',' acts+=STRING)* ';'
+	'trace' name=ID '=' acts+=[Leaf|STRING] ( ',' acts+=[Leaf|STRING])* ';'
 ;	
 	
 Tree :

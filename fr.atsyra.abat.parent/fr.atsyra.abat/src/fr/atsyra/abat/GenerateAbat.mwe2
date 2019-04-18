@@ -33,6 +33,7 @@ Workflow {
 			name = "fr.atsyra.abat.Abat"
 			fileExtensions = "abat"
 
+			
 			serializer = {
 				generateStub = false
 			}
