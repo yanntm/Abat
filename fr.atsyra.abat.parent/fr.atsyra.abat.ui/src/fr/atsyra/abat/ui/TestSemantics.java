@@ -45,7 +45,7 @@ public class TestSemantics extends FileAction {
 			HashSet<Leaf> may = new HashSet<>();
 			gatherInitial (cont.getRoot(), may);			
 			
-			if (check(cont, trace.getActs().stream().collect(Collectors.toList()), must, may, new HashSet<>())) {
+			if (check(cont, trace.getActs().stream().map(l->l.getName()).collect(Collectors.toList()), must, may, new HashSet<>())) {
 				log.append("Trace \""+ trace.getName() + "\" accepted \n");
 			} else {
 				log.append("Trace \""+ trace.getName() + "\" rejected \n");
