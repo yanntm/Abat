@@ -70,5 +70,21 @@ trace interval_1_10 = "a1","a2","a3","a4","a5","a6","a7","a8","a9","a10";
 To invoke the actual tool, right click the file and look for the menu entry "Test Semantics".
 The tool answers with a diagnosis trace membership of each trace to the tree (accepted or rejected).
 
+For instance 
+
+```
+Trace "interval_1_1" rejected 
+Trace "interval_1_2" rejected 
+Trace "interval_1_3" rejected 
+Trace "interval_1_4" rejected 
+Trace "interval_1_5" rejected 
+Trace "interval_1_6" accepted 
+Trace "interval_1_7" accepted 
+Trace "interval_1_8" rejected 
+Trace "interval_1_9" accepted 
+Trace "interval_1_10" rejected 
+```
+
+
 More diagnosis information can be found in the "console", use "Window->Show View->Other->Console" if it is not already displayed.
 
