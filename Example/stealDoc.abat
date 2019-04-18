@@ -1,0 +1,19 @@
+tree = OR (
+	OR ( "bribe","blackmail" ),
+	SAND (
+		SAND (
+			OR ("steal","force"),
+			AND ("disableAlarm","passDoor")
+		),
+		"takeDoc"
+	)	
+)
+;
+
+trace a1 = "bribe";
+trace a2 = "blackmail";
+trace a3 = "steal","disableAlarm","passDoor","takeDoc";
+trace a4 = "steal","passDoor","disableAlarm","takeDoc";
+trace a5 = "force","disableAlarm","passDoor","takeDoc";
+trace a6 = "force","passDoor","disableAlarm","takeDoc";
+
