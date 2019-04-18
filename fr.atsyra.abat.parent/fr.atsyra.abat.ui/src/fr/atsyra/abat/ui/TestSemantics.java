@@ -148,9 +148,9 @@ public class TestSemantics extends FileAction {
 		Tree par = (Tree) newlyValid.eContainer();
 		
 		if (par instanceof Or) {
-			Or or = (Or) par;
-			marked.add(or);
+			Or or = (Or) par;			
 			removeLeaves(or, may);
+			marked.add(or);
 			propagate(cont, or, must, may, marked);
 		} else if (par instanceof Sand) {
 			Sand sand = (Sand) par;
