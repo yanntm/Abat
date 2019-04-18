@@ -13,19 +13,25 @@ Trace :
 	
 Tree :
 	And
+	| Wand
 	| Sand
+	| Wsand
 	| Or
 	| Leaf
 	| True
 	| False;
 
-Operator : And | Sand | Or ;
+Operator : And | Wand | Sand | Wsand | Or ;
 
 And : 'AND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
+
+Wand : 'wAND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
 Or : 'OR' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
 Sand : 'SAND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
+
+Wsand : 'wSAND' '(' ops+=Tree ',' ops+=Tree  (',' ops+=Tree)* ')' ;
 
 Leaf : name=STRING;	
 
