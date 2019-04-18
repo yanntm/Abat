@@ -1,8 +1,6 @@
 package fr.atsyra.abat.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -18,7 +17,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import fr.atsyra.abat.abat.AttackTree;
 
 public abstract class FileAction implements IObjectActionDelegate {
 
@@ -44,7 +42,7 @@ public abstract class FileAction implements IObjectActionDelegate {
 		 * @see IActionDelegate#run(IAction)
 		 */
 		public void run(IAction action) {
-
+			ConsoleAdder.startConsole();
 			StringBuilder sb = new StringBuilder();
 			for (IFile file : files) {
 				if (file != null) {
@@ -53,13 +51,15 @@ public abstract class FileAction implements IObjectActionDelegate {
 				log.info(getServiceName() + " was executed on " + file.getName());
 				java.lang.System.err.println(getServiceName() + " was executed on " + file.getName());
 			}
-
+			InputDialog id = new InputDialog(shell, "Results", "Test of membership for traces reported :", sb.toString(), null);			
+			id.open();
+			id.getReturnCode();
 			MessageDialog.openInformation(
 					shell,
 					"Verification result",
-					getServiceName() + " operation successfully produced files : " + sb.toString());
+					getServiceName() + "  :\n" + sb.toString());
 
-			log.info(getServiceName() + " operation successfully produced files : " + sb.toString());
+			//log.info(getServiceName() + " operation successfully produced files : " + sb.toString());
 			
 			files.clear();
 		}
