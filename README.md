@@ -72,6 +72,8 @@ trace interval_1_10 = "a1","a2","a3","a4","a5","a6","a7","a8","a9","a10";
 To invoke the actual tool, right click the file and look for the menu entry "Test Semantics".
 The tool answers with a diagnosis trace membership of each trace to the tree (accepted or rejected).
 
+![screenshot](https://raw.githubusercontent.com/yanntm/Abat/master/img/screen1.png)
+
 For instance 
 
 ```
