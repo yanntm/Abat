@@ -56,14 +56,16 @@ public class TestSemantics extends FileAction {
 	
 	
 	private boolean check(AttackTree cont, List<String> trace, Set<Tree> must, Set<Leaf> may, Set<Tree> marked) {
-		if (trace.size() == 0 && marked.contains(cont.getRoot())) {
-			getLog().info("Reached the end of the trace, we are accepted.");
-			return true;
+		if (marked.contains(cont.getRoot())) {
+			if (trace.size() == 0) {
+				getLog().info("Reached the end of the trace, we are accepted.");
+				return true;
+			} else {
+				getLog().fine("Reached the goal, but trace is not finished. Currently not accepting longer suffix of other attacks.");
+				return false;
+			}
 		} else if (trace.size() == 0) {
 			getLog().fine("Reached the end of the trace but we have not validated the goal.");
-			return false;
-		} else if (trace.size() > 0 && marked.contains(cont.getRoot())) {
-			getLog().fine("Reached the goal, but trace is not finished. Currently not accepting longer suffix of other attacks.");
 			return false;
 		} else if (may.isEmpty()) {
 			getLog().fine("Still elements in the trace, but nowhere to match them in the tree.");
