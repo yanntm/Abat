@@ -1,0 +1,16 @@
+tree = AND (
+	OR ( SAND ("a1","a2","a3","a4","a5","a6") , SAND("a5","a6","a7","a8","a9")),
+	OR ( SAND ("a1","a2","a3") , SAND("a4","a5","a6"), "a7" ),
+	"a4"
+	)
+;
+trace interval_1_1 = "a1";
+trace interval_1_2 = "a1","a2";
+trace interval_1_3 = "a1","a2","a3";
+trace interval_1_4 = "a1","a2","a3","a4";
+trace interval_1_5 = "a1","a2","a3","a4","a5";
+trace interval_1_6 = "a1","a2","a3","a4","a5","a6";
+trace interval_1_7 = "a1","a2","a3","a4","a5","a6","a7";
+trace interval_1_8 = "a1","a2","a3","a4","a5","a6","a7","a8";
+trace interval_1_9 = "a1","a2","a3","a4","a5","a6","a7","a8","a9";
+trace interval_1_10 = "a1","a2","a3","a4","a5","a6","a7","a8","a9","a10";

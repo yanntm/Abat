@@ -20,6 +20,8 @@ Create a "File-> New-> Project."
 
 Create a "File-> new -> file -> Empty file" and give it the `.abat` extension, e.g. `test.abat`.
 
+Alternatively, import some of the example files in the Examples folder of this repository.
+
 ## Tree syntax
 
 Add a tree definition :

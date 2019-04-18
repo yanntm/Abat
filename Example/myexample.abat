@@ -1,0 +1,5 @@
+tree= AND("a","b");
+
+trace t1 = "a", "b", "a";
+trace t2 = "a", "b";
+trace t3 = "b", "a";

@@ -1,0 +1,3 @@
+tree = AND(SAND("a","b"),SAND("a","c"));
+
+trace t1 = "a","b","c";
