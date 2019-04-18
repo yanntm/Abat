@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="PSTL Projects Update Site" url="http://coloane.lip6.fr/incubation-updates">
+      GAL Incubation Updates Site
+   </description>
+   <feature url="features/fr.atsyra.abat.feature_1.0.0.qualifier.jar" id="fr.atsyra.abat.feature" version="1.0.0.qualifier">
+      <category name="Action Based Attack Trees"/>
+   </feature>
+   <category-def name="Action Based Attack Trees" label="Action Based Attack Trees">
+      <description>
+         This category provides features for action based attack trees.
+      </description>
+   </category-def>
+</site>
