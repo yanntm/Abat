@@ -24,9 +24,9 @@
 		<module>fr.atsyra.abat.ide</module>
 		<module>fr.atsyra.abat.ui</module>
 		<module>fr.atsyra.abat.target</module>
-		<module>fr.atsyra.abat.tests</module>
+<!-- 		<module>fr.atsyra.abat.tests</module>
 		<module>fr.atsyra.abat.ui.tests</module>
-		<module>fr.atsyra.abat.feature</module>
+ -->		<module>fr.atsyra.abat.feature</module>
 		<module>fr.atsyra.abat.updatesite</module>
 	</modules>
 	<build>
