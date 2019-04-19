@@ -55,7 +55,7 @@ public class TestSemantics extends FileAction {
 	
 	
 	
-	private boolean check(AttackTree cont, List<String> trace, Set<Tree> must, Set<Leaf> may, Set<Tree> marked) {
+	protected boolean check(AttackTree cont, List<String> trace, Set<Tree> must, Set<Leaf> may, Set<Tree> marked) {
 		if (marked.contains(cont.getRoot())) {
 			if (trace.size() == 0) {
 				getLog().info("Reached the end of the trace, we are accepted.");
@@ -79,22 +79,7 @@ public class TestSemantics extends FileAction {
 			} else if (possible.size() == 1) {
 				N.add(possible);
 			} else {
-				if (possible.size() >= 32) {
-					throw new RuntimeException("Unsupported too large operands ");
-				}
-				int totalSubsetCount = (int) Math.pow(2, possible.size()) - 1;
-				for (int i = 1; i < totalSubsetCount +1 ; i++) {
-					List<Leaf> toadd = new ArrayList<Leaf>(Integer.bitCount(i));
-					//List<Integer> test = new ArrayList<Integer>();
-					for (int j = 0 ; j < possible.size()+1 ; j++) {
-						if (  ((i  >> j) & 1)  == 1 ) {
-							toadd.add(possible.get(j));
-							// test.add(j);
-						}
-					}
-					//System.out.println("Test i="+i+" set="+test);
-					N.add(toadd);					
-				}
+				computeSubsets(possible, N);
 			}
 			getLog().info("Starting recursion for action "+ label +" with " + N.size() + " branches to explore.");
 			
@@ -127,8 +112,8 @@ public class TestSemantics extends FileAction {
 				}
 				
 				getLog().info("Obtained after executing "+label + " state =" + getMarkedString(cont.getRoot(), nextMarked, "OK"));
-				getLog().info("Must =" + getMarkedString(cont.getRoot(), nextMust, "REQ"));
-				getLog().info("May =" + getMarkedString(cont.getRoot(), nextMay, "MAY"));
+				getLog().info("Must =" + (nextMust.isEmpty() ? "None" : getMarkedString(cont.getRoot(), nextMust, "REQ")));
+				getLog().info("May =" + (nextMay.isEmpty() ? "None" : getMarkedString(cont.getRoot(), nextMay, "MAY")));
 				
 				if ( check(cont,new ArrayList<>(trace.subList(1, trace.size())), nextMust, nextMay , nextMarked) ) {
 					return true;
@@ -136,6 +121,27 @@ public class TestSemantics extends FileAction {
 			}
 			getLog().info("Backtracking action "+ label +" all " + N.size() + " branches to explore proved to be dead ends.");
 			return false;
+		}
+	}
+
+
+
+	private void computeSubsets(List<Leaf> possible, List<List<Leaf>> subsets) {
+		if (possible.size() >= 32) {
+			throw new RuntimeException("Unsupported too large operands ");
+		}
+		int totalSubsetCount = (int) Math.pow(2, possible.size()) - 1;
+		for (int i = 1; i < totalSubsetCount +1 ; i++) {
+			List<Leaf> toadd = new ArrayList<Leaf>(Integer.bitCount(i));
+			//List<Integer> test = new ArrayList<Integer>();
+			for (int j = 0 ; j < possible.size()+1 ; j++) {
+				if (  ((i  >> j) & 1)  == 1 ) {
+					toadd.add(possible.get(j));
+					// test.add(j);
+				}
+			}
+			//System.out.println("Test i="+i+" set="+test);
+			subsets.add(toadd);					
 		}
 	}
 
@@ -380,7 +386,7 @@ public class TestSemantics extends FileAction {
 
 
 
-	private void gatherInitial(Tree tree, Set<Leaf> initialNodes) {
+	protected void gatherInitial(Tree tree, Set<Leaf> initialNodes) {
 		if (tree instanceof Leaf) {
 			Leaf leaf = (Leaf) tree;
 			initialNodes.add(leaf);			
