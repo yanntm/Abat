@@ -14,9 +14,6 @@ before_script:
 script : 
  - cd fr.atsyra.abat.parent && mvn -e -T 4 generate-sources install && cd - 
 
-
-jdk: oraclejdk8
-
 env:
   global:
     - MAVEN_OPTS="-Xmx3g"
