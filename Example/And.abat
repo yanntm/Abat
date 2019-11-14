@@ -1,19 +1,12 @@
 
 tree = AND ( OR ( "Disable1", "ShutDown"), OR("Disable2", "ShutDown"));
 
-// acepted
 trace d1d2 = "Disable1","Disable2";
 trace SD = "ShutDown";
 trace d2d1 = "Disable2","Disable1" ;
-
-trace ShutDownd1 = "ShutDown","Disable1";
-
-trace d1ShutDown = "Disable1", "ShutDown";
-
+trace ShutDownd1 = "ShutDown","Disable1" ;
+trace d1ShutDown = "Disable1", "ShutDown" ;
 trace SDSD = "ShutDown","ShutDown";
-
-// not accepted
 trace d1D1 = "Disable1","Disable1";
-trace d2d1SD = "Disable2","Disable1","ShutDown";
 
 
